@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人主页 - 自我介绍</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%);
+            color: #333;
+            line-height: 1.8;
+            min-height: 100vh;
+        }
+
+        /* 顶部横幅 */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: 900px;
+            margin: -40px auto 40px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        }
+        .card h2 {
+            color: #667eea;
+            font-size: 1.6em;
+            margin-bottom: 25px;
+            padding-left: 15px;
+            border-left: 5px solid #667eea;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 个人简介布局 */
+        .profile {
+            display: flex;
+            align-items: flex-start;
+            gap: 35px;
+            flex-wrap: wrap;
+        }
+        .profile img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #667eea;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            flex-shrink: 0;
+        }
+        .profile-text {
+            flex: 1;
+            min-width: 280px;
+        }
+        .profile-text p {
+            margin-bottom: 15px;
+            color: #555;
+            text-align: justify;
+        }
+
+        /* 表格样式 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 14px 18px;
+            text-align: left;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            font-size: 1em;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:hover td {
+            background: #f8f9ff;
+        }
+
+        /* 兴趣爱好列表 */
+        .hobby-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        .hobby-list li {
+            background: #f8f9ff;
+            padding: 18px 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: background 0.3s;
+        }
+        .hobby-list li:hover {
+            background: #eef1ff;
+        }
+        .hobby-list li strong {
+            color: #667eea;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 1.05em;
+        }
+        .hobby-list li span {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        /* 技能进度条 */
+        .skill {
+            margin-bottom: 20px;
+        }
+        .skill-name {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+        .skill-bar {
+            height: 12px;
+            background: #e8ebf5;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .skill-fill {
+            height: 100%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 1s ease;
+        }
+
+        /* 友情链接 */
+        .links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+        .links a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(102, 126, 234, 0.45);
+        }
+
+        /* 页脚 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .header h1 { font-size: 2em; }
+            .profile { justify-content: center; text-align: center; }
+            .profile-text { text-align: left; }
+            .card { padding: 25px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 顶部横幅 -->
+    <div class="header">
+        <h1>你好，我是杨礼泽 👋</h1>
+        <p>中国科学技术大学 · 人工智能与数据科学学院</p>
+    </div>
+
+    <div class="container">
+
+        <!-- 卡片1：个人简介 -->
+        <div class="card">
+            <h2>📌 关于我</h2>
+            <div class="profile">
+                <img src="avatar.jpg" alt="我的照片">
+                <div class="profile-text">
+                    <p>我是杨礼泽，目前就读于中国科学技术大学计算机科学与技术学院。从高中第一次接触编程开始，我就对计算机世界充满了好奇。现在，我正走在探索技术边界的路上。</p>
+                    <p>在学习上，我对 Web 开发、计算机网络和人工智能都有浓厚兴趣。平时喜欢动手写一些小项目，比如个人博客、小工具和数据分析脚本。我相信，代码不仅是工具，更是表达想法的方式。</p>
+                    <p>在生活中，我是一个热爱运动和阅读的人。羽毛球是我最喜欢的运动，而科幻小说则是我放松心情的最佳选择。我也喜欢用相机记录四季变化，把美好的瞬间留下来。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 卡片2：教育经历 -->
+        <div class="card">
+            <h2>🎓 教育经历</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>学校</th>
+                        <th>专业 / 阶段</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2024 - 至今</td>
+                        <td>中国科学技术大学</td>
+                        <td>人工智能 · 本科</td>
+                    </tr>
+                    <tr>
+                        <td>2021- 2024</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 卡片3：兴趣爱好 -->
+        <div class="card">
+            <h2>🎯 兴趣爱好</h2>
+            <ul class="hobby-list">
+                <li>
+                    <strong>💻 编程开发</strong>
+                    <span>喜欢用 Python 写小工具，最近在学习前端开发，正在搭建自己的博客。</span>
+                </li>
+                <li>
+                    <strong>🏸 羽毛球</strong>
+                    <span>喜欢打羽毛球，享受在球场上挥洒汗水的感觉。</span>
+                </li>
+                <li>
+                    <strong>📚 科幻阅读</strong>
+                    <span>喜欢科幻小说，最爱《三体》</span>
+                </li>
+                <li>
+                    <strong>📷 摄影</strong>
+                    <span>喜欢拍自然风景，用镜头记录精彩瞬间</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 卡片4：技能展示 -->
+        <div class="card">
+            <h2>⚡ 技能展示</h2>
+            <div class="skill">
+                <div class="skill-name">
+                    <span>Python</span>
+                    <span>85%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 85%;"></div>
+                </div>
+            </div>
+            <div class="skill">
+                <div class="skill-name">
+                    <span>HTML / CSS</span>
+                    <span>75%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 75%;"></div>
+                </div>
+            </div>
+            <div class="skill">
+                <div class="skill-name">
+                    <span>JavaScript</span>
+                    <span>60%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 60%;"></div>
+                </div>
+            </div>
+            <div class="skill">
+                <div class="skill-name">
+                    <span>C / C++</span>
+                    <span>70%</span>
+                </div>
+                <div class="skill-bar">
+                    <div class="skill-fill" style="width: 70%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>🔗 友情链接</h2>
+            <div class="links">
+                <a href="https://www.ustc.edu.cn" target="_blank">🏫 中国科学技术大学</a>
+                <a href="https://github.com" target="_blank">💻 我的 GitHub</a>
+                <a href="https://myblog.example.com" target="_blank">📝 我的博客</a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 页脚 -->
+    <div class="footer">
+        © 2026 杨礼泽 · 中国科学技术大学计算机网络实验一
+    </div>
+
+</body>
+</html>
